@@ -1,0 +1,6 @@
+{
+  "appId": "com.litquest.app",
+  "appName": "LitQuest",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

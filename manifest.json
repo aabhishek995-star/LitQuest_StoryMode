@@ -1,1 +1,11 @@
-{"name": "LitQuest", "short_name": "LitQuest", "start_url": "./index.html", "display": "standalone", "background_color": "#fbf9f5", "theme_color": "#34265f", "icons": []}
+{
+  "name": "LitQuest",
+  "short_name": "LitQuest",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf9f5",
+  "theme_color": "#34265f",
+  "description": "British Literature examination practice and performance tracking."
+}
