@@ -1,8 +1,8 @@
 const $=id=>document.getElementById(id);
 const BRITISH_QUESTIONS=window.QUESTIONS, BRITISH_SYLLABUS=window.SYLLABUS;
 let activeSubject="british",current=0,answers={},seconds=5400,clock=null,finished=false,activeQuestions=window.QUESTIONS.slice(),quizLabel="British Literature Mock Examination";
-function setSubject(which){activeSubject=which;if(which==="indian"){window.QUESTIONS=window.INDIAN_QUESTIONS;window.SYLLABUS=window.INDIAN_SYLLABUS;}else{window.QUESTIONS=BRITISH_QUESTIONS;window.SYLLABUS=BRITISH_SYLLABUS;}}
-const screens=["home-screen","subject-screen","indian-subject-screen","syllabus-screen","practice-screen","leaderboard-screen","performance-screen","quiz-screen","result-screen","whale-hub-screen","whale-play-screen","whale-study-screen","whale-quiz-screen","whale-complete-screen"];
+function setSubject(which){activeSubject=which;if(which==="indian"){window.QUESTIONS=window.INDIAN_QUESTIONS;window.SYLLABUS=window.INDIAN_SYLLABUS;}else if(which==="nz"){window.QUESTIONS=window.NZ_QUESTIONS;window.SYLLABUS=window.NZ_SYLLABUS;}else{window.QUESTIONS=BRITISH_QUESTIONS;window.SYLLABUS=BRITISH_SYLLABUS;}}
+const screens=["home-screen","subject-screen","indian-subject-screen","nz-subject-screen","syllabus-screen","practice-screen","leaderboard-screen","performance-screen","quiz-screen","result-screen","whale-hub-screen","whale-play-screen","whale-study-screen","whale-quiz-screen","whale-complete-screen"];
 const STORAGE_KEY="litquest-attempts";
 function show(id){screens.forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");window.scrollTo(0,0)}
 function attempts(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]")}catch{return []}}
@@ -10,13 +10,21 @@ function saveAttempts(a){localStorage.setItem(STORAGE_KEY,JSON.stringify(a))}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function renderHome(){
  $("subject-grid").innerHTML=SUBJECTS.map((s,i)=>`<button class="subject-card ${i===0?"available":""}" data-i="${i}"><span class="subject-icon">${["✦","文","❖","◌","⌂","✧"][i]}</span><strong>${escapeHtml(s.name)}</strong><small>${escapeHtml(s.subtitle)}</small><span class="status ${s.status==="ready"?"ready":""}">${s.status==="ready"?"Available now":"Coming soon"}</span></button>`).join("");
- document.querySelectorAll(".subject-card").forEach(b=>b.onclick=()=>{if(+b.dataset.i===0){setSubject("british");show("subject-screen")}else if(+b.dataset.i===1){setSubject("indian");show("indian-subject-screen")}else if(+b.dataset.i===4){window.openWhaleHub()}else alert("This module is ready to be populated.")});
+ document.querySelectorAll(".subject-card").forEach(b=>b.onclick=()=>{if(+b.dataset.i===0){setSubject("british");show("subject-screen")}else if(+b.dataset.i===1){setSubject("indian");show("indian-subject-screen")}else if(+b.dataset.i===4){setSubject("nz");show("nz-subject-screen")}else alert("This module is ready to be populated.")});
 }
-function renderSyllabus(){$("syllabus-list").innerHTML=SYLLABUS.map(u=>`<article class="syllabus-card"><h3>UNIT ${u.unit} · ${escapeHtml(u.title)}</h3>${u.texts.map(t=>`<div class="text-row"><span>${escapeHtml(t.author)}</span><span>${escapeHtml(t.title)}</span></div>`).join("")}</article>`).join("")}
+function renderSyllabus(){$("syllabus-back").textContent="← "+(activeSubject==="nz"?"New Zealand Literature":activeSubject==="indian"?"Indian Literature":"British Literature");$("syllabus-list").innerHTML=SYLLABUS.map(u=>`<article class="syllabus-card"><h3>UNIT ${u.unit} · ${escapeHtml(u.title)}</h3>${u.texts.map(t=>`<div class="text-row"><span>${escapeHtml(t.author)}</span><span>${escapeHtml(t.title)}</span></div>`).join("")}</article>`).join("")}
 function renderPractice(){
- $("practice-units").innerHTML=SYLLABUS.map(u=>`<button class="unit-practice" data-unit="${u.unit}"><span class="unit-number">${u.unit}</span><span><strong>${escapeHtml(u.title)}</strong><small>${QUESTIONS.filter(q=>q.unit===u.unit).length} questions · ${u.texts.length} prescribed texts</small></span></button>`).join("");
- document.querySelectorAll(".unit-practice").forEach(b=>b.onclick=()=>{activeQuestions=QUESTIONS.filter(q=>q.unit===b.dataset.unit);quizLabel="Unit "+b.dataset.unit+" Practice";startQuiz()});
+ $("practice-back").textContent="← "+(activeSubject==="nz"?"New Zealand Literature":activeSubject==="indian"?"Indian Literature":"British Literature");
+ const unitMarkup=SYLLABUS.map(u=>`<button class="unit-practice" data-kind="unit" data-unit="${u.unit}"><span class="unit-number">${u.unit}</span><span><strong>${escapeHtml(u.title)}</strong><small>${QUESTIONS.filter(q=>q.unit===u.unit).length} questions · ${u.texts.length} prescribed texts</small></span></button>`).join("");
+ const textMarkup=SYLLABUS.flatMap(u=>u.texts.map(t=>{const count=QUESTIONS.filter(q=>q.work===t.title).length;return `<button class="unit-practice text-practice" data-kind="text" data-work="${escapeHtml(t.title)}"><span class="unit-number">✎</span><span><strong>${escapeHtml(t.title)}</strong><small>${escapeHtml(t.author)} · ${count} questions · Unit ${u.unit}</small></span></button>`})).join("");
+ const bankButton=activeSubject==="nz"?`<button class="primary wide" id="nz-run-all-bank">Start all ${QUESTIONS.length} questions →</button><button class="secondary wide" id="nz-run-mock">Mixed 100-question mock →</button>`:"";
+ $("practice-units").innerHTML=bankButton+`<h2 class="practice-subhead">Practise by unit</h2>${unitMarkup}<h2 class="practice-subhead">Practise by prescribed text</h2>${textMarkup}`;
+ document.querySelectorAll(".unit-practice").forEach(b=>b.onclick=()=>{if(b.dataset.kind==="text"){activeQuestions=QUESTIONS.filter(q=>q.work===b.dataset.work);quizLabel=b.dataset.work+" · Text Practice";}else{activeQuestions=QUESTIONS.filter(q=>q.unit===b.dataset.unit);quizLabel="Unit "+b.dataset.unit+" Practice";}startQuiz()});
+ const all=$("nz-run-all-bank");if(all)all.onclick=()=>{activeQuestions=QUESTIONS.slice();quizLabel="New Zealand Literature · Complete Question Bank";startQuiz()};
+ const mock=$("nz-run-mock");if(mock)mock.onclick=startNZMock;
 }
+function startNZMock(){const per=QUESTIONS.reduce((m,q)=>(m[q.work]=(m[q.work]||[]).concat(q),m),{});const selected=[];Object.keys(per).forEach((k,i)=>{const a=per[k].slice().sort(()=>Math.random()-.5);selected.push(...a.slice(0,i<10?7:6))});activeQuestions=selected.sort(()=>Math.random()-.5);quizLabel="New Zealand Literature · Mixed 100-question Mock";startQuiz()}
+
 function renderLeaderboard(){
  const a=attempts().filter(r=>(r.subject||"british")===activeSubject).sort((x,y)=>y.percent-x.percent||new Date(y.date)-new Date(x.date));
  $("leaderboard-list").innerHTML=a.length?a.map((v,i)=>`<div class="leader-row"><span class="rank">${i===0?"♛":i+1}</span><span class="leader-detail"><strong>${escapeHtml(v.label)}</strong><small>${new Date(v.date).toLocaleString()} · ${v.correct}/${v.total} correct</small></span><span class="leader-score">${v.percent}%</span></div>`).join(""):`<div class="empty">No completed attempts yet. Finish a mock examination and your results will appear here. Your personal leaderboard is saved on this device.</div>`;
@@ -58,7 +66,7 @@ function progressBar(label,g,pct){
  return `<div class="metric-row"><div class="metric-head"><strong>${escapeHtml(label)}</strong><b>${score}%</b></div><div class="metric-track"><span style="width:${score}%;background:${tone}"></span></div><small>${g.correct} correct · ${g.attempted} answered · ${g.total} seen</small></div>`;
 }
 function renderPerformance(){
- const a=aggregate(),unitNames=activeSubject==="indian"?{"01":"Poetry","02":"Prose","03":"Drama","04":"Fiction","05":"Literary Criticism"}:{"01":"Poetry I · Early twentieth century","02":"Poetry II · Late twentieth century","03":"Prose","04":"Drama","05":"Fiction"};
+ const a=aggregate(),unitNames=activeSubject==="indian"?{"01":"Poetry","02":"Prose","03":"Drama","04":"Fiction","05":"Literary Criticism"}:activeSubject==="nz"?{"01":"Poetry","02":"Prose","03":"Drama","04":"Fiction","05":"Short Stories"}:{"01":"Poetry I · Early twentieth century","02":"Poetry II · Late twentieth century","03":"Prose","04":"Drama","05":"Fiction"};
  if(!a.records.length){$("performance-content").innerHTML=`<div class="empty">Your performance insights will appear after you complete your first quiz. Start with a unit practice or the full mock examination.</div>`;return}
  const unitRows=Object.entries(unitNames).filter(([k])=>a.units[k]).map(([k,n])=>progressBar(n,a.units[k],a.pct)).join("");
  const workRows=Object.entries(a.works).sort((x,y)=>a.pct(x[1])-a.pct(y[1])).map(([n,g])=>progressBar(n,g,a.pct)).join("");
@@ -80,20 +88,20 @@ $("brand-home").onclick=()=>show("home-screen");
 $("open-leaderboard").onclick=()=>{renderLeaderboard();show("leaderboard-screen")};
 $("open-subject-leaderboard").onclick=()=>{renderLeaderboard();show("leaderboard-screen")};
 $("open-performance").onclick=()=>{renderPerformance();show("performance-screen")};
-$("performance-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":"subject-screen");
+$("performance-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":activeSubject==="nz"?"nz-subject-screen":"subject-screen");
 $("export-progress").onclick=exportProgress;
 $("clear-progress").onclick=()=>{if(confirm("Delete all saved LitQuest attempts and performance history from this device? This cannot be undone.")){localStorage.removeItem(STORAGE_KEY);renderPerformance();alert("Saved progress cleared.")}};
 $("back-home").onclick=()=>show("home-screen");
 $("open-syllabus").onclick=()=>{renderSyllabus();show("syllabus-screen")};
-$("syllabus-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":"subject-screen");
+$("syllabus-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":activeSubject==="nz"?"nz-subject-screen":"subject-screen");
 $("open-practice").onclick=()=>{renderPractice();show("practice-screen")};
-$("practice-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":"subject-screen");
-$("leader-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":"subject-screen");
+$("practice-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":activeSubject==="nz"?"nz-subject-screen":"subject-screen");
+$("leader-back").onclick=()=>show(activeSubject==="indian"?"indian-subject-screen":activeSubject==="nz"?"nz-subject-screen":"subject-screen");
 $("start-quiz").onclick=startFull;
 $("prev-question").onclick=()=>{if(current>0){current--;renderQuestion();renderNav()}};
 $("next-question").onclick=()=>{if(current<activeQuestions.length-1){current++;renderQuestion();renderNav()}else if(confirm("Submit your answers?"))submit()};
 $("submit-quiz").onclick=()=>{if(confirm("Submit your examination now?"))submit()};
-$("quit-quiz").onclick=()=>{if(confirm("Exit this attempt? Your answers will be lost.")){clearInterval(clock);show(activeSubject==="indian"?"indian-subject-screen":"subject-screen")}};
+$("quit-quiz").onclick=()=>{if(confirm("Exit this attempt? Your answers will be lost.")){clearInterval(clock);show(activeSubject==="indian"?"indian-subject-screen":activeSubject==="nz"?"nz-subject-screen":"subject-screen")}};
 $("retry-quiz").onclick=()=>quizLabel.includes("Mock Examination")?startFull():startQuiz();
 $("home-button").onclick=()=>show("home-screen");
 $("indian-back-home").onclick=()=>show("home-screen");
@@ -102,5 +110,14 @@ $("indian-start-quiz").onclick=()=>{setSubject("indian");startFull()};
 $("indian-open-practice").onclick=()=>{setSubject("indian");renderPractice();show("practice-screen")};
 $("indian-open-leaderboard").onclick=()=>{setSubject("indian");renderLeaderboard();show("leaderboard-screen")};
 $("indian-open-performance").onclick=()=>{setSubject("indian");renderPerformance();show("performance-screen")};
+$("nz-back-home").onclick=()=>show("home-screen");
+$("nz-open-syllabus").onclick=()=>{setSubject("nz");renderSyllabus();show("syllabus-screen")};
+$("nz-open-bank").onclick=()=>{setSubject("nz");renderPractice();show("practice-screen")};
+$("nz-open-unit-practice").onclick=()=>{setSubject("nz");renderPractice();show("practice-screen");$("practice-units").querySelector(".practice-subhead").scrollIntoView({block:"start"})};
+$("nz-open-text-practice").onclick=()=>{setSubject("nz");renderPractice();show("practice-screen");const h=[...document.querySelectorAll(".practice-subhead")].find(x=>x.textContent.includes("prescribed text"));if(h)h.scrollIntoView({block:"start"})};
+$("nz-open-story").onclick=()=>{setSubject("nz");window.openWhaleHub()};
+$("nz-open-performance").onclick=()=>{setSubject("nz");renderPerformance();show("performance-screen")};
+$("nz-open-leaderboard").onclick=()=>{setSubject("nz");renderLeaderboard();show("leaderboard-screen")};
+window.openNZWorkPractice=(work)=>{setSubject("nz");activeQuestions=QUESTIONS.filter(q=>q.work===work);quizLabel=work+" · Text Practice";startQuiz()};
 renderHome();renderSyllabus();
 if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));

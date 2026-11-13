@@ -1,33 +1,26 @@
-# LitQuest Story Mode – The Whale Rider (Prototype)
+# The Whale Rider — Story Mode
 
-## What's included
-- Story Mode hub linked from New Zealand Literature on the home screen.
-- A 21-chapter map. Chapter 1 is playable; chapters 2–21 are intentionally marked as upcoming until their source-grounded scene scripts and learning checkpoints are authored.
-- Chapter 1 playable narrative based on the uploaded novel's opening chapter (printed pages 1–7): opening landscape and the ancestral whale-rider episode.
-- Optional exploration choices that reveal explanations but do not change canonical plot events.
-- Learning pause with summary, figures, themes, and literary craft tabs.
-- Three original knowledge-check questions with explanations and retry.
-- Local progress storage.
-- Original generated landscape artwork and a second underwater visual.
-- Offline synthetic ambience and stylised whale-call sound design, with independent ambience/effects volume controls.
+Story Mode is a linear, chapter-by-chapter learning companion for Witi Ihimaera's *The Whale Rider*.
 
-## Source fidelity
-The uploaded novel is the authority for narrative sequence. Chapter 1 text is paraphrased, not reproduced. The prototype does not reproduce the novel's copyrighted prose. The 50–51 scan supplied separately is not used as Chapter 1 material; it belongs later in the novel and will be mapped to its correct chapter in a later content pass.
+## Included
 
-The Bookey guide was treated only as a secondary study aid and is not used to override the novel. Chapter 2–21 content is not falsely represented as finished: those chapters remain visibly upcoming.
+- 21 numbered chapter entries, all populated.
+- The novel’s final section heading, “The Girl from the Sea”, is shown before Chapters Twenty and Twenty-one, matching the supplied edition’s structure.
+- Chapter summaries written as paraphrase, not reproduced novel prose.
+- Character notes, themes, literary craft and exam focus for each chapter.
+- Sequential unlocking: the next chapter opens after the learner marks the current chapter learned.
+- Chapter map, continue journey, saved local progress and replay of completed chapters.
+- Contextual ocean, wind, rain, thunder and stylised whale-call audio.
+- A dedicated 25-question MCQ set for *The Whale Rider* in the New Zealand Literature question bank.
 
-## Audio note
-All included sound effects are original synthetic sound design created for this prototype. The whale-call is whale-inspired, not an authentic animal recording. See `assets/whale-rider/AUDIO_CREDITS.md`.
+## Narrative policy
 
-## Run locally
-Open `index.html` in a modern browser for basic testing. For PWA/offline service-worker testing, serve the folder through a local HTTP server. For Android, run:
+The learner follows the novel's sequence. There are no alternative plot branches, invented endings or choices that alter canonical events. Story Mode is a study adaptation and must be read alongside the prescribed novel. It does not reproduce the novel's text.
 
-```bash
-npm install
-npm run build
-npx cap add android   # only if the android folder does not already exist
-npx cap sync android
-npx cap open android
-```
+## Audio
 
-The existing GitHub Actions workflow can also build the APK after the updated project is pushed to the repository.
+Ambient tracks loop at low volume. Whale-call and thunder effects are triggered at relevant moments rather than played continuously. Users can change ambience and effects volume or mute either layer.
+
+## Progress
+
+Progress is stored locally in the browser/app using localStorage. It is not synced between devices.

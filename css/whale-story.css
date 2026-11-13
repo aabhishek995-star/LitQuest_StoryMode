@@ -3,3 +3,17 @@
 @keyframes whaleFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 body:has(.whale-screen:not(.hidden)){background:#071f28;color:#edf2eb}body:has(.whale-screen:not(.hidden)) .topbar{background:#092a34;border-color:#1c4650}body:has(.whale-screen:not(.hidden)) .brand-name{color:#f1eee5}body:has(.whale-screen:not(.hidden)) .brand-mark{background:#b58a4f}body:has(.whale-screen:not(.hidden)) .leader-link{background:#103943;border-color:#31565d;color:#e7c681}body:has(.whale-screen:not(.hidden)) .shell{max-width:1140px;padding-top:20px}
 @media(max-width:680px){.whale-screen{padding:12px 10px 38px}.whale-hero{min-height:470px;background-position:58% center}.whale-hero-copy{padding:35px 22px}.whale-hub-stats{gap:6px}.whale-hub-stats span{padding:11px 9px}.whale-hub-stats b{font-size:17px}.whale-hub-stats small{font-size:7px;letter-spacing:.6px}.whale-chapter-grid{grid-template-columns:repeat(3,1fr);gap:7px}.whale-chapter{min-height:108px;padding:10px}.whale-chapter b{font-size:23px}.whale-chapter strong{font-size:11px}.whale-section-head{align-items:start;flex-direction:column}.whale-scene{min-height:72vh}.whale-scene-content{padding:18px}.whale-dialogue{padding:15px}.whale-play-top{gap:9px}.whale-play-top .whale-back{font-size:11px}.whale-audio-controls button{width:32px;height:32px}.whale-study-tabs button{padding:9px 10px}.whale-complete-art{min-height:70vh;padding:22px}}
+/* New Zealand Literature hub and expanded revision bank */
+.nz-hero{background:linear-gradient(125deg,#163e48,#183b52 55%,#273b53);border-radius:22px;padding:36px 32px;margin-bottom:28px;color:#f4f0e5;box-shadow:0 16px 40px #071f2820}
+.nz-hero h1{font:500 clamp(38px,7vw,58px)/.98 Georgia,serif;margin:0 0 12px;letter-spacing:-1.5px}
+.nz-hero h1 em{color:#d8b875;font-weight:400}
+.nz-hero p:last-child{color:#d3e1dc;font-size:13px}
+.nz-hub-grid .story-featured{grid-column:1/-1;background:linear-gradient(110deg,#103d49,#1d5360);border-color:#c9a45f;color:#fff}
+.nz-hub-grid .story-featured span{color:#e6c37d}
+.practice-subhead{font:500 23px Georgia,serif;color:var(--ink,#29263b);margin:25px 0 10px}
+.text-practice .unit-number{font-size:17px}
+.whale-chapter.done{border-color:#7eb99c;background:linear-gradient(145deg,#17483f,#10343a)}
+.whale-chapter.done .chapter-state{color:#a9d8b7}
+@media(max-width:600px){.nz-hero{padding:28px 22px}.nz-hub-grid .story-featured{grid-column:auto}.practice-subhead{font-size:20px}}
+.whale-section-divider{grid-column:1/-1;margin:16px 0 2px;padding:12px 14px;border-left:3px solid #d9b56e;background:#0d3540;color:#f0d19a;border-radius:0 10px 10px 0;font-size:10px;font-weight:850;letter-spacing:1.5px}
+.whale-section-divider span{float:right;color:#a9c4bf;font-weight:600;letter-spacing:.5px}
