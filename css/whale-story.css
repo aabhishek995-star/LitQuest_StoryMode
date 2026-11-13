@@ -17,3 +17,28 @@ body:has(.whale-screen:not(.hidden)){background:#071f28;color:#edf2eb}body:has(.
 @media(max-width:600px){.nz-hero{padding:28px 22px}.nz-hub-grid .story-featured{grid-column:auto}.practice-subhead{font-size:20px}}
 .whale-section-divider{grid-column:1/-1;margin:16px 0 2px;padding:12px 14px;border-left:3px solid #d9b56e;background:#0d3540;color:#f0d19a;border-radius:0 10px 10px 0;font-size:10px;font-weight:850;letter-spacing:1.5px}
 .whale-section-divider span{float:right;color:#a9c4bf;font-weight:600;letter-spacing:.5px}
+
+/* Interactive linear story pathway — 42 authored learning stops */
+.whale-chapter-grid{position:relative;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:8px 4px 8px 24px}
+.whale-chapter-grid:before{content:"";position:absolute;left:10px;top:20px;bottom:20px;width:2px;background:linear-gradient(#d9b56e,#376a70 55%,#23434a)}
+.whale-chapter{min-height:148px;transition:transform .2s,border-color .2s;box-shadow:0 8px 24px #00151b30}
+.whale-chapter.available:hover{transform:translateY(-3px)}
+.whale-chapter:after{content:"";position:absolute;left:-20px;top:22px;width:10px;height:10px;border-radius:50%;background:#d9b56e;border:3px solid #0a2e38;box-shadow:0 0 0 2px #d9b56e}
+.whale-chapter:disabled:after{background:#537078;box-shadow:0 0 0 2px #537078}
+.whale-node-progress{font-style:normal;color:#e7c887;font-size:9px;margin-top:6px}
+.whale-route-chip{display:inline-flex;padding:7px 10px;border-radius:999px;background:#0d4652d9;border:1px solid #9abbb477;color:#f1d39a;font-size:9px;letter-spacing:1.2px;font-weight:850;margin-bottom:12px}
+.whale-choice-prompt{max-width:760px;margin:16px 0 8px;color:#f3d79c;font:600 17px/1.4 Georgia,serif}
+.whale-choice{display:flex;align-items:flex-start;gap:12px;font-size:13px;padding:14px 16px;transition:background .2s,border-color .2s}
+.whale-choice .choice-letter{flex:0 0 25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e7c17b;color:#263039;font-weight:900;font-size:11px}
+.whale-choice:disabled{opacity:1;cursor:default}
+.whale-choice.choice-correct{border-color:#8dc8a1;background:#17483f}
+.whale-choice.choice-wrong{border-color:#d68f83;background:#4a3033}
+.whale-choice-feedback{max-width:760px;margin-top:13px;padding:18px;border:1px solid #658b83;border-radius:15px;background:#092c36ed;color:#e8f0e9;backdrop-filter:blur(12px);animation:whaleFade .35s ease}
+.whale-choice-feedback>p{font-size:13px;line-height:1.7;margin:10px 0}
+.feedback-verdict{font:600 20px Georgia;margin-bottom:7px}
+.feedback-verdict.good{color:#a9d9b2}.feedback-verdict.needs-thought{color:#f0c987}
+.feedback-next{border-top:1px solid #45636a;padding-top:10px;margin:12px 0;color:#d8e6df}
+.feedback-next b{color:#f1d49b;font-size:11px;letter-spacing:.6px;text-transform:uppercase}
+.feedback-next p{font-size:12px;line-height:1.6;margin:6px 0}
+.feedback-next+.gold-button{margin-top:7px}
+@media(max-width:680px){.whale-chapter-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding-left:22px;gap:9px}.whale-chapter{min-height:140px}.whale-choice-prompt{font-size:16px}.whale-choice-feedback{padding:15px}}

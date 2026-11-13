@@ -32,3 +32,12 @@
 ## Important scope note
 
 Question banks are original practice material, not official past papers or exam predictions. Students should check close-reading details against the prescribed editions and course notes. Story Mode is a study companion, not a replacement for reading the novel.
+
+## Whale Rider interactive story revision
+- 21 numbered chapters in fixed order
+- 42 interactive story stops (two per chapter)
+- Two interpretive choices per stop with choice-specific feedback
+- Feedback identifies the stronger reading and explains the narrative purpose
+- Chapter study pauses retain summary, characters, themes, literary craft and exam focus
+- Choices never alter canonical plot events
+- Offline service-worker cache includes `data/whale_scenes.js`
